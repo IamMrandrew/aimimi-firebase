@@ -118,9 +118,6 @@ const SharedGoal = ({ goal, joined, publicGoal, setPublicGoal }) => {
               {joined ? "Joined" : "Join"}
             </JoinButton>
             {/* Check if user us Admin, show the delete button if  is admin */}
-            {auth.role === "Admin" && (
-              <DeleteButton onClick={deleteGoalHandler}>Delete</DeleteButton>
-            )}
           </Buttons>
         </FlexDiv>
       </Container>

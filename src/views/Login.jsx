@@ -46,7 +46,8 @@ const Login = ({ setLoading }) => {
     e.preventDefault();
     // Login(emails.email, passwords.password);
     try {
-      await loginWithEmail(email, password);
+      const result = await loginWithEmail(email, password);
+      console.log(result);
       history.push("/");
     } catch {
       console.log("Failed to log in");

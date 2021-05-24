@@ -26,19 +26,31 @@ import Loader from "./components/Loader";
 import SingleFeed from "./views/SingleFeed";
 import OtherProfile from "./views/OtherProfile";
 import Users from "./views/Users";
+import GoalService from "./services/GoalService";
+
+import { useAuth } from "./contexts/AuthContext";
 
 const App = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   // goals state contain goals from user
-  const [goals, setGoals] = useState([]);
+  // const [goals, setGoals] = useState([]);
+
+  // Firebase
+  const { currentUser } = useAuth();
+  const [goals] = GoalService.getUserGoal(currentUser.uid);
+
   // userSharedGoals state contain all shared goals
   const [userSharedGoals, setUserSharedGoals] = useState([]);
 
   // const { auth, setAuth, setPropic, setAuthLoading } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    console.log("USER", currentUser);
+    console.log(goals);
+  }, [goals]);
   // useEffect function will automatically and independently run
   // useEffect(() => {
   //   //axios.get used GET request to fetch user data from MongoDB
@@ -86,82 +98,48 @@ const App = () => {
 
   return (
     <>
-      <GlobalStyle />
-      <Switch>
-        {/*  if user logged in, then user can view his/her homepage */}
-        {!loading && (
-          <>
-            <Overlay showModal={showModal} setShowModal={setShowModal} />
-            <Wrapper>
-              <Sidebar
-                showSidebar={showSidebar}
-                setShowSidebar={setShowSidebar}
-                userSharedGoals={userSharedGoals}
-              />
-              <Main lg={9}>
-                <Nav
-                  showSidebar={showSidebar}
-                  setShowSidebar={setShowSidebar}
-                />
-                <Route exact path="/">
-                  <Today
-                    showModal={showModal}
-                    setShowModal={setShowModal}
-                    goals={goals}
-                    setGoals={setGoals}
-                  />
-                </Route>
-                <Route exact path="/goals">
-                  <Goals goals={goals} setGoals={setGoals} />
-                </Route>
-                <Route path="/goals/:id">
-                  <Details goals={goals} setGoals={setGoals} />
-                </Route>
-                <Route path="/shares">
-                  <Shares />
-                </Route>
-                <Route exact path="/profile">
-                  <Profile />
-                </Route>
-                <Route path="/profile/:id">
-                  <OtherProfile />
-                </Route>
-                <Route path="/activity">
-                  <Activity />
-                </Route>
-                <Route path="/feed/:id">
-                  <SingleFeed />
-                </Route>
-                <Route path="/leaderboard/:id">
-                  <Leaderboard userSharedGoals={userSharedGoals} />
-                </Route>
-                {/* {auth.role === "Admin" && (
-                  <Route path="/users">
-                    <Users />
-                  </Route>
-                )} */}
-              </Main>
-            </Wrapper>
-          </>
-        )}
-        {/* If user did not login, then only onboarding page, signin and login page will be shown */}
-        {loading && <Loader />}
-        <Route exact path="/">
-          <Onboarding />
-        </Route>
-        <Route path="/login">
-          <Login setLoading={setLoading} />
-        </Route>
-        <Route path="/signup">
-          <Signup />
-        </Route>
-        <Route path="/onboarding">
-          <Onboarding />
-        </Route>
-        <Route path="/email-check">
-          <Verification />
-        </Route>
-      </Switch>
+      <Overlay showModal={showModal} setShowModal={setShowModal} />
+      <Wrapper>
+        <Sidebar
+          showSidebar={showSidebar}
+          setShowSidebar={setShowSidebar}
+          userSharedGoals={userSharedGoals}
+        />
+        <Main lg={9}>
+          <Nav showSidebar={showSidebar} setShowSidebar={setShowSidebar} />
+          <Route exact path="/">
+            <Today
+              showModal={showModal}
+              setShowModal={setShowModal}
+              goals={goals}
+            />
+          </Route>
+          <Route exact path="/goals">
+            <Goals goals={goals} />
+          </Route>
+          <Route path="/goals/:id">
+            <Details goals={goals} />
+          </Route>
+          <Route path="/shares">
+            <Shares />
+          </Route>
+          <Route exact path="/profile">
+            <Profile />
+          </Route>
+          <Route path="/profile/:id">
+            <OtherProfile />
+          </Route>
+          <Route path="/activity">
+            <Activity />
+          </Route>
+          <Route path="/feed/:id">
+            <SingleFeed />
+          </Route>
+          <Route path="/leaderboard/:id">
+            <Leaderboard userSharedGoals={userSharedGoals} />
+          </Route>
+        </Main>
+      </Wrapper>
     </>
   );
 };

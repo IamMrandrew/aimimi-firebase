@@ -12,14 +12,13 @@ const Goal = ({
   setSelectedGoalCheckIn,
 }) => {
   const [showCheckInButton, setShowCheckInButton] = useState(false);
-  const [progressData, setProgressData] = useState(0);
 
   const { auth } = useContext(AuthContext);
 
   // Show the check in button
   const showCheckInButtonHandler = () => {
-    if (progressData) {
-      if (progressData.check_in < goal.frequency) {
+    if (goal) {
+      if (goal.check_in < goal.goal.frequency) {
         setShowCheckInButton(true);
       }
     }
@@ -34,19 +33,8 @@ const Goal = ({
   const showModalHandler = () => {
     setShowModal((prev) => !prev);
     setSelectedGoal(goal);
-    setSelectedGoalCheckIn(progressData.check_in);
+    setSelectedGoalCheckIn(goal.check_in);
   };
-
-  // Set the progress of the goal
-  useEffect(() => {
-    if (auth.onGoingGoals) {
-      if (auth.onGoingGoals.length > 0) {
-        setProgressData(
-          auth.onGoingGoals.find((item) => item.goal_id === goal._id)
-        );
-      }
-    }
-  }, [auth, goal]);
 
   return (
     <div>
@@ -57,27 +45,20 @@ const Goal = ({
         <Wrapper showCheckInButton={showCheckInButton}>
           {/* Calculate the precentage of the goal */}
           <Progress
-            percentage={
-              progressData
-                ? (progressData.check_in / goal.frequency) * 100
-                : 100
-            }
+            percentage={(goal.check_in / goal.goal.frequency) * 100}
           ></Progress>
           <TitleWrapper>
-            <Title>{goal.title}</Title>
-            <Description>{goal.period}</Description>
+            <Title>{goal.goal.title}</Title>
+            <Description>{goal.goal.period}</Description>
             <Description>
               {/* Calculate the days left  */}
-              {goal.timespan -
-                Math.floor(
-                  (Date.now() - Date.parse(goal.startTime)) / (1000 * 3600 * 24)
-                )}{" "}
+              {goal.goal.timespan - goal.dayPassed}
               days left
             </Description>
           </TitleWrapper>
           <TimesWrapper>
             <Times>
-              {progressData ? progressData.check_in : "-"}/{goal.frequency}
+              {goal.checkIn}/{goal.goal.frequency}
             </Times>
           </TimesWrapper>
         </Wrapper>

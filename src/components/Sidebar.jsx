@@ -17,9 +17,8 @@ import Loader from "./Loader";
 
 // Component of sidebar
 const Sidebar = ({ showSidebar, setShowSidebar, userSharedGoals }) => {
-  const { auth, setAuth, propic, setPropic, authLoading } = useContext(
-    AuthContext
-  );
+  const { auth, setAuth, propic, setPropic, authLoading } =
+    useContext(AuthContext);
   const history = useHistory();
 
   // Handle logout button
@@ -109,16 +108,7 @@ const Sidebar = ({ showSidebar, setShowSidebar, userSharedGoals }) => {
         <FaTrophy />
         {/* Only for admin, which route user to the User page if clicked */}
       </NavItem>
-      {auth.role === "Admin" && (
-        <NavItem
-          path="/users"
-          exact={false}
-          showSidebarHandler={showSidebarHandler}
-          text="Users"
-        >
-          <FaUserCog />
-        </NavItem>
-      )}
+
       {/* Show the profile picture and user name */}
       <Hr />
       <ProfileItem onClick={showSidebarHandler} to="/profile">
@@ -134,7 +124,9 @@ const Sidebar = ({ showSidebar, setShowSidebar, userSharedGoals }) => {
           <FaSignOutAlt />
         </ItemIcon>
         <Hover>
-          <ItemText onClick={onClickHandler} data-testid='logoutButton'>Log out</ItemText>
+          <ItemText onClick={onClickHandler} data-testid="logoutButton">
+            Log out
+          </ItemText>
         </Hover>
       </Item>
     </Wrapper>
