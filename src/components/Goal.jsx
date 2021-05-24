@@ -18,7 +18,7 @@ const Goal = ({
   // Show the check in button
   const showCheckInButtonHandler = () => {
     if (goal) {
-      if (goal.check_in < goal.goal.frequency) {
+      if (goal.checkIn < goal.goal.frequency) {
         setShowCheckInButton(true);
       }
     }
@@ -33,7 +33,7 @@ const Goal = ({
   const showModalHandler = () => {
     setShowModal((prev) => !prev);
     setSelectedGoal(goal);
-    setSelectedGoalCheckIn(goal.check_in);
+    setSelectedGoalCheckIn(goal.checkIn);
   };
 
   return (
@@ -45,7 +45,7 @@ const Goal = ({
         <Wrapper showCheckInButton={showCheckInButton}>
           {/* Calculate the precentage of the goal */}
           <Progress
-            percentage={(goal.check_in / goal.goal.frequency) * 100}
+            percentage={(goal.checkIn / goal.goal.frequency) * 100}
           ></Progress>
           <TitleWrapper>
             <Title>{goal.goal.title}</Title>

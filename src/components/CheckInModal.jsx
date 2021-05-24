@@ -74,13 +74,13 @@ const CheckInModal = ({
               type="range"
               value={progress}
               min="0"
-              max={selectedGoal.frequency}
+              max={selectedGoal.goal.frequency}
               selectedGoal={selectedGoal}
               progress={progress}
               data-testid="checkInProgress"
             />
           </SliderWrapper>
-          <Number>{selectedGoal.frequency}</Number>
+          <Number>{selectedGoal.goal.frequency}</Number>
         </SliderField>
         <Button onClick={checkInHandler} data-testid="checkInButton">
           Check in

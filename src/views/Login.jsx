@@ -10,13 +10,14 @@ import { useHistory, Link } from "react-router-dom";
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
+import googleIcon from "../assets/google.png";
 
 // Login Page
 const Login = ({ setLoading }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const { loginWithEmail } = useAuth();
+  const { loginWithEmail, signInWithGoogle } = useAuth();
 
   // Handle login button
   // const Login = (emails, passwords) => {
@@ -63,6 +64,12 @@ const Login = ({ setLoading }) => {
     e.preventDefault();
     setPassword("");
   };
+
+  const signInWithGoogleHandler = () => {
+    signInWithGoogle();
+    history.push("/");
+  };
+
   return (
     <Wrapper>
       <Main>
@@ -102,6 +109,11 @@ const Login = ({ setLoading }) => {
               <LoginBar>Login</LoginBar>
               <Subtitle> Don't have an account? </Subtitle>
               <SignupLink to="/signup">Sign up </SignupLink>
+
+              <SignInWithGoogle onClick={signInWithGoogleHandler}>
+                <GoogleIcon src={googleIcon} />
+                Sign in with Google
+              </SignInWithGoogle>
             </LoginForm>
           </CustomContainer>
         </RightWrapper>
@@ -109,6 +121,8 @@ const Login = ({ setLoading }) => {
     </Wrapper>
   );
 };
+
+export default Login;
 
 const Wrapper = styled(Row)`
   height: 100vh;
@@ -263,4 +277,27 @@ const SignupLink = styled(Link)`
   }
 `;
 
-export default Login;
+const SignInWithGoogle = styled.button`
+  appearance: none;
+  outline: none;
+  border: solid 1px#c2c2c2;
+
+  width: 100%;
+  padding: 12px;
+  border-radius: 18px;
+  background-color: white;
+  color: var(--monoSecondary);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const GoogleIcon = styled.img`
+  height: 23px;
+  width: 23px;
+  margin-right: 16px;
+`;

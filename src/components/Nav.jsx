@@ -8,7 +8,7 @@ import { FaUserAlt } from "react-icons/fa";
 import { FaSignOutAlt } from "react-icons/fa";
 import axios from "axios";
 import { useHistory, useLocation } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuth } from "../contexts/AuthContext";
 import Loader from "./Loader";
 
 //Showing the navbar
@@ -16,9 +16,8 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
   const IsMatch = useLocation();
   const [title, setTitle] = useState();
   const [showDropDown, setShowDropDown] = useState(false);
-  const { auth, setAuth, propic, setPropic, authLoading } = useContext(
-    AuthContext
-  );
+  const { auth, setAuth, propic, setPropic, authLoading } =
+    useContext(AuthContext);
   const history = useHistory();
   const SideBarHandler = (showSidebar) => {
     setShowSidebar(!showSidebar);
@@ -26,6 +25,8 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
   const DropDownHandler = (showDropDown) => {
     setShowDropDown(!showDropDown);
   };
+
+  const { signOut } = useAuth();
 
   useEffect(() => {
     // get user information
@@ -66,11 +67,17 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
       });
   };
 
+  const logout = () => {
+    signOut();
+    history.push("/login");
+  };
+
   // Run Logout function if user clicked the button
   const onClickHandler = (e) => {
     e.preventDefault();
     setShowDropDown(!showDropDown);
-    Logout();
+    // Logout();
+    logout();
   };
 
   // Route user to profile page if clicked the profile button
@@ -88,7 +95,10 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
   return (
     <Wrapper>
       <NavContainer>
-        <CustomFaBars onClick={() => SideBarHandler(showSidebar)} data-testid='sidebarButton'/>
+        <CustomFaBars
+          onClick={() => SideBarHandler(showSidebar)}
+          data-testid="sidebarButton"
+        />
         <Avator>
           {!authLoading && <AvatorImg src={propic} />}
           {authLoading && <Loader />}
@@ -96,18 +106,27 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
         <Today>{title}</Today>
         <OutDropDown>
           <WrapDropDownWrapper>
-            <DropDownWrapper onClick={() => DropDownHandler(showDropDown)} data-testid='dropDownButton'>
+            <DropDownWrapper
+              onClick={() => DropDownHandler(showDropDown)}
+              data-testid="dropDownButton"
+            >
               <UserName>{auth ? auth.username : ""}</UserName>
               <CustomFaChevronDown />
             </DropDownWrapper>
 
             <DownWrapper showDropDown={showDropDown}>
               <BlockWrapper>
-                <ProfileWrapper onClick={onClickProfile} data-testid='profileButton'>
+                <ProfileWrapper
+                  onClick={onClickProfile}
+                  data-testid="profileButton"
+                >
                   <CustomFaUserAlt />
                   <DropDownText>Profile</DropDownText>
                 </ProfileWrapper>
-                <LogoutWrapper onClick={onClickHandler} data-testid='logoutButton'>
+                <LogoutWrapper
+                  onClick={onClickHandler}
+                  data-testid="logoutButton"
+                >
                   <CustomFaSignOutAlt />
                   <LoginDropDownText>Logout</LoginDropDownText>
                 </LogoutWrapper>
@@ -116,7 +135,7 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
           </WrapDropDownWrapper>
         </OutDropDown>
 
-        <BellWapper onClick={onClickBell} data-testid='bellButton'>
+        <BellWapper onClick={onClickBell} data-testid="bellButton">
           <CustomFaBell />
         </BellWapper>
       </NavContainer>
