@@ -9,56 +9,58 @@ import { FiLock } from "react-icons/fi";
 import { useHistory, Link } from "react-router-dom";
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 // Login Page
 const Login = ({ setLoading }) => {
-  const [details, setDetails] = useState({ email: "", password: "" });
-  const [emails, setEmails] = useState({
-    email: "",
-  });
-  const [passwords, setPasswords] = useState({
-    password: "",
-  });
-  const { setAuth } = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const history = useHistory();
+  const { loginWithEmail } = useAuth();
+
   // Handle login button
-  const Login = (emails, passwords) => {
-    // Send a post request with user inputed email and password
-    axios
-      .post(
-        "/user/login",
-        { password: passwords, email: emails },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((response) => {
-        // If user successfully logged in, setAuth to save the user information and redirect to the home page
-        setAuth(response.data);
-        history.push("/");
-        setLoading(true);
-      })
-      .catch((error) => {
-        //If the email / password is wrong, pop up an alert
-        alert("Login Failed. Try Again.");
-      });
-  };
+  // const Login = (emails, passwords) => {
+  //   // Send a post request with user inputed email and password
+  //   axios
+  //     .post(
+  //       "/user/login",
+  //       { password: passwords, email: emails },
+  //       {
+  //         withCredentials: true,
+  //       }
+  //     )
+  //     .then((response) => {
+  //       // If user successfully logged in, setAuth to save the user information and redirect to the home page
+  //       setAuth(response.data);
+
+  //       setLoading(true);
+  //     })
+  //     .catch((error) => {
+  //       //If the email / password is wrong, pop up an alert
+  //       alert("Login Failed. Try Again.");
+  //     });
+  // };
 
   // Call login function after user clicked the login button
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    Login(emails.email, passwords.password);
+    // Login(emails.email, passwords.password);
+    try {
+      await loginWithEmail(email, password);
+      history.push("/");
+    } catch {
+      console.log("Failed to log in");
+    }
   };
   // clear the email state
   const clearEmail = (e) => {
     e.preventDefault();
-    setEmails({ email: "" });
+    setEmail("");
   };
   // clear the password state
   const clearPassword = (e) => {
     e.preventDefault();
-    setPasswords({ password: "" });
+    setPassword("");
   };
   return (
     <Wrapper>
@@ -78,10 +80,8 @@ const Login = ({ setLoading }) => {
                   type="email"
                   name="name"
                   placeholder="Enter your email"
-                  onChange={(e) =>
-                    setEmails({ ...emails, email: e.target.value })
-                  }
-                  value={emails.email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   required
                 />
                 <CustomFaTimes onClick={clearEmail} />
@@ -92,10 +92,8 @@ const Login = ({ setLoading }) => {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  onChange={(e) =>
-                    setPasswords({ ...passwords, password: e.target.value })
-                  }
-                  value={passwords.password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                   required
                 />
                 <CustomFaTimes onClick={clearPassword} />

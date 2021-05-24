@@ -36,60 +36,60 @@ const App = () => {
   // userSharedGoals state contain all shared goals
   const [userSharedGoals, setUserSharedGoals] = useState([]);
 
-  const { auth, setAuth, setPropic, setAuthLoading } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
+  // const { auth, setAuth, setPropic, setAuthLoading } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   // useEffect function will automatically and independently run
-  useEffect(() => {
-    //axios.get used GET request to fetch user data from MongoDB
-    axios
-      .get("/user", { withCredentials: true })
-      .then((response) => {
-        setAuth(response.data);
+  // useEffect(() => {
+  //   //axios.get used GET request to fetch user data from MongoDB
+  //   axios
+  //     .get("/user", { withCredentials: true })
+  //     .then((response) => {
+  //       setAuth(response.data);
 
-        // fetch user profile picture with matched user email and password
-        axios
-          .get(`/user/propic/`, { withCredentials: true })
-          .then((response) => {
-            setPropic(response.data);
-            setAuthLoading(false);
-            setLoading(false);
-          })
-          .catch((error) => {
-            console.log(error);
-            setLoading(false);
-          });
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        setLoading(false);
-      });
-  }, [setAuth, setPropic, loading]);
+  //       // fetch user profile picture with matched user email and password
+  //       axios
+  //         .get(`/user/propic/`, { withCredentials: true })
+  //         .then((response) => {
+  //           setPropic(response.data);
+  //           setAuthLoading(false);
+  //           setLoading(false);
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //           setLoading(false);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data);
+  //       setLoading(false);
+  //     });
+  // }, [setAuth, setPropic, loading]);
 
-  useEffect(() => {
-    // Fetch user goals with matched user information
-    axios
-      .get("/goal", { withCredentials: true })
-      .then((response) => {
-        setGoals(response.data);
-        setUserSharedGoals(
-          // we will only get the shared goal from database
-          response.data.filter((goal) => goal.publicity === true)
-        );
-        console.log(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  }, [auth]);
+  // useEffect(() => {
+  //   // Fetch user goals with matched user information
+  //   axios
+  //     .get("/goal", { withCredentials: true })
+  //     .then((response) => {
+  //       setGoals(response.data);
+  //       setUserSharedGoals(
+  //         // we will only get the shared goal from database
+  //         response.data.filter((goal) => goal.publicity === true)
+  //       );
+  //       console.log(response.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data);
+  //     });
+  // }, [auth]);
 
   return (
     <>
       <GlobalStyle />
       <Switch>
         {/*  if user logged in, then user can view his/her homepage */}
-        {!loading && auth && (
+        {!loading && (
           <>
             <Overlay showModal={showModal} setShowModal={setShowModal} />
             <Wrapper>
@@ -135,11 +135,11 @@ const App = () => {
                 <Route path="/leaderboard/:id">
                   <Leaderboard userSharedGoals={userSharedGoals} />
                 </Route>
-                {auth.role === "Admin" && (
+                {/* {auth.role === "Admin" && (
                   <Route path="/users">
                     <Users />
                   </Route>
-                )}
+                )} */}
               </Main>
             </Wrapper>
           </>

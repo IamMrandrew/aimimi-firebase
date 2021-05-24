@@ -12,6 +12,7 @@ import styled from "styled-components/macro";
 import { useState } from "react";
 import axios from "axios";
 import { useHistory, Link } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -19,27 +20,28 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [img, setImg] = useState(null);
   const history = useHistory();
+  const { signupWithEmail } = useAuth();
 
-  const Signup = () => {
-    let formdata = new FormData();
-    // we will set user email, passwrod, username and img in formdata
-    formdata.append("email", email);
-    formdata.append("password", password);
-    formdata.append("username", username);
-    formdata.append("img", img);
-    // we will send a POST request to post the new account details
-    axios
-      .post("/user/signup", formdata, {
-        withCredentials: true,
-      })
-      .then((response) => {
-        console.log(response);
-        history.push("/email-check");
-      })
-      .catch((error) => {
-        alert("Signup Failed. Try Again.");
-      });
-  };
+  // const Signup = () => {
+  //   let formdata = new FormData();
+  //   // we will set user email, passwrod, username and img in formdata
+  //   formdata.append("email", email);
+  //   formdata.append("password", password);
+  //   formdata.append("username", username);
+  //   formdata.append("img", img);
+  //   // we will send a POST request to post the new account details
+  //   axios
+  //     .post("/user/signup", formdata, {
+  //       withCredentials: true,
+  //     })
+  //     .then((response) => {
+  //       console.log(response);
+  //       history.push("/email-check");
+  //     })
+  //     .catch((error) => {
+  //       alert("Signup Failed. Try Again.");
+  //     });
+  // };
 
   // Handle the clear input button
   const clearEmail = (e) => {
@@ -54,9 +56,14 @@ const Signup = () => {
     e.preventDefault();
     setUsername("");
   };
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    Signup();
+    // Signup();
+    try {
+      await signupWithEmail(username, email, password);
+    } catch {
+      console.log("Failed to create an account");
+    }
   };
 
   // Handle the uploaded file button
