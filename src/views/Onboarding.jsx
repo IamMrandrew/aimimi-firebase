@@ -7,7 +7,10 @@ import logo from "../assets/Logo.svg";
 import Onboarding1 from "../assets/Onboarding_1.png";
 import Onboarding2 from "../assets/Onboarding_2.png";
 import Onboarding3 from "../assets/Onboarding_3.png";
+import screenShot1 from "../assets/screenshot_onboarding_1.png";
+import screenShot2 from "../assets/screenshot_onboarding_2.png";
 import { Link } from "react-router-dom";
+import MobileStoreButton from "react-mobile-store-button";
 
 //Onboarding page
 const Onboarding = () => {
@@ -22,39 +25,32 @@ const Onboarding = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <CustomNav>
-              <NavButton filled="true">
-                <NavLink to="/signup"> Signup</NavLink>
-              </NavButton>
-              <NavButton>
-                <NavLink to="/login">Log in</NavLink>
-              </NavButton>
+              <NavLink to="/signup"> Signup</NavLink>
+              <NavLink to="/login">Log in</NavLink>
             </CustomNav>
           </Navbar.Collapse>
         </CustomContainer>
       </CustomNavbar>
       <Hero>
         <CustomContainer>
-          <FlexWrapper>
+          <FlexWrapper hero={true}>
             <ContentWrapper>
               <SloganWrapper>
-                <Slogan>A goal sharing web application</Slogan>
+                <Slogan>A goal sharing application</Slogan>
                 <Button to="/signup">Get Started</Button>
               </SloganWrapper>
             </ContentWrapper>
             <ImgWrapper>
-              <OnboardingImg1 src={Onboarding1} />
+              <OnboardingImg1 src={Onboarding3} />
             </ImgWrapper>
           </FlexWrapper>
         </CustomContainer>
       </Hero>
       <Intro>
         <CustomContainer>
-          <FloatImgWrapper>
-            <Onboarding1Mobile src={Onboarding1} />
-          </FloatImgWrapper>
           <FlexWrapper>
-            <ImgWrapper>
-              <OnboardingImg2 src={Onboarding2} />
+            <ImgWrapper left={true} hide={false}>
+              <OnboardingImg2 src={screenShot1} />
             </ImgWrapper>
             <ContentWrapper>
               <TextWrapper>
@@ -78,7 +74,7 @@ const Onboarding = () => {
               <TextWrapper>
                 <Title>Shared Goal</Title>
                 <Para>
-                  aimimi introduced shared goals for our users. User explore
+                  Aimimi introduced shared goals for our users. User explore
                   goal in shares and feel free to challenge themselves. Users
                   can participate other's goal once it is set as public.
                 </Para>
@@ -89,11 +85,52 @@ const Onboarding = () => {
                 </Para>
               </TextWrapper>
             </ContentWrapper2>
-            <ImgWrapper>
-              <OnboardingImg2 src={Onboarding3} />
+            <ImgWrapper hide={false}>
+              <OnboardingImg2 src={screenShot2} />
             </ImgWrapper>
           </FlexWrapper>
         </CustomContainer>
+        <Download>
+          <CustomContainer>
+            <FlexWrapper>
+              <ContentWrapper>
+                <TextWrapper>
+                  <Title>Get it on Mobile</Title>
+                  <Para>
+                    Aimimi offer options for both Android and iOS. You can now
+                    download on Google play or App store.
+                  </Para>
+                  <StoreButtons>
+                    <MobileStoreButton
+                      store="android"
+                      url={
+                        "https://play.google.com/apps/internaltest/4698898207217232587"
+                      }
+                      linkProps={{ title: "Google Play Button" }}
+                      width={150}
+                      height={85}
+                    />
+                    <MobileStoreButton
+                      store="ios"
+                      url={"https://"}
+                      linkProps={{ title: "App Store Button" }}
+                      width={150}
+                    />
+                  </StoreButtons>
+                </TextWrapper>
+              </ContentWrapper>
+              <ContentWrapper>
+                <TextWrapper>
+                  <Title>Continue on Desktop</Title>
+                  <Para>
+                    Due to the work of our developers, we also provide a web
+                    version of aimimi. Now, user can keep motivated everywhere.
+                  </Para>
+                </TextWrapper>
+              </ContentWrapper>
+            </FlexWrapper>
+          </CustomContainer>
+        </Download>
       </Intro>
     </Wrapper>
   );
@@ -109,7 +146,7 @@ const CustomContainer = styled(Container)`
 // Navbar
 
 const CustomNavbar = styled(Navbar)`
-  background-color: var(--primary);
+  background-color: var(--primaryGoal);
   padding-top: 20px;
 
   .navbar-brand {
@@ -146,35 +183,27 @@ const CustomNav = styled(Nav)`
 const NavLink = styled(Link)`
   text-decoration: none;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
   color: white;
+  margin-left: 20px;
+  text-align: right;
+  cursor: pointer;
 
   :hover {
     text-decoration: none;
     color: white;
   }
-`;
-
-const NavButton = styled.div`
-  appearance: none;
-  background: ${(props) => (props.filled ? "var(--primaryShaded)" : "none")};
-  border: ${(props) => (props.filled ? "none" : "2px solid white")};
-  padding: 6px 30px;
-  border-radius: 20px;
-  margin-left: 15px;
-  text-align: right;
-  cursor: pointer;
 
   @media (max-width: 991.98px) {
-    background: none;
-    border: none;
+    padding-right: 10px;
+    margin-bottom: 12px;
   }
 `;
 
 // Hero Section
 
 const Hero = styled.section`
-  background-color: var(--primary);
+  background-color: var(--primaryGoal);
 
   @media (max-width: 991.98px) {
     padding-bottom: 80px;
@@ -185,13 +214,19 @@ const FlexWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
+  justify-content: space-between;
+
+  /* @media (max-width: 991.98px) {
+    padding-bottom: 80px;
+  ${(props) => (props.hero ? true : false)};
+  } */
 `;
 
 const ContentWrapper = styled.div`
   flex-basis: 50%;
   display: flex;
   align-items: center;
-  min-height: 350px;
+  min-height: 300px;
 
   @media (max-width: 991.98px) {
     flex-basis: 100%;
@@ -210,9 +245,14 @@ const ContentWrapper2 = styled.div`
 
 const ImgWrapper = styled.div`
   flex-basis: 50%;
+  text-align: ${(props) => (props.left ? "left" : "right")};
 
   @media (max-width: 991.98px) {
-    display: none;
+    flex-basis: 100%;
+    order: 2;
+    display: ${(props) => (props.hide ? "none" : "block")};
+    text-align: center;
+    margin-bottom: 30px;
   }
 `;
 
@@ -224,25 +264,25 @@ const TextWrapper = styled.div``;
 
 const Slogan = styled.h1`
   color: white;
-  font-size: 34px;
+  font-size: 340x;
   font-weight: 700;
   margin-bottom: 40px;
 
   @media (max-width: 991.98px) {
-    font-size: 28px;
+    font-size: 34px;
   }
 `;
 
 const Button = styled(Link)`
   display: block;
   appearance: none;
-  background: var(--primaryShaded);
+  background: var(--primaryMild);
   color: white;
   font-size: 18px;
   font-weight: 500;
   padding: 8px 10px;
   width: 160px;
-  border-radius: 20px;
+  border-radius: 18px;
   cursor: pointer;
   text-align: center;
 
@@ -254,32 +294,21 @@ const Button = styled(Link)`
 
 const OnboardingImg1 = styled.img`
   width: 100%;
+  max-width: 400px;
   position: relative;
-  top: 120px;
+  top: 30px;
 `;
 
 // Intro Section
 
 const Intro = styled.section`
-  padding-top: 50px;
+  padding-top: 40px;
 
   @media (max-width: 991.98px) {
-    padding-top: 100px;
+    padding-top: 40px;
   }
 `;
 
-const FloatImgWrapper = styled.div`
-  display: none;
-
-  @media (max-width: 991.98px) {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    top: -260px;
-    left: 0;
-    right: 0;
-  }
-`;
 const Onboarding1Mobile = styled.img`
   width: 320px;
   height: 320px;
@@ -288,8 +317,33 @@ const Onboarding1Mobile = styled.img`
 const OnboardingImg2 = styled.img``;
 
 const Title = styled.h2`
-  font-size: 24px;
+  font-size: 30px;
   margin-bottom: 20px;
+  font-weight: 600;
 `;
 
-const Para = styled.p``;
+const Para = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--monoSecondary);
+`;
+
+const Download = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  background: var(--background);
+  padding-top: 80px;
+  padding-bottom: 20px;
+
+  & > div > div > div {
+    align-items: flex-start;
+  }
+`;
+
+const StoreButtons = styled.div`
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+`;
