@@ -132,6 +132,7 @@ const Main = styled(Col)`
     padding-top: 40px;
   }
 `;
+
 const ImageBackWrapper = styled.div`
   background-color: var(--primaryGoal);
   height: 100%;
@@ -262,4 +263,5 @@ const SignupLink = styled(Link)`
     color: #1c4b56;
   }
 `;
+
 export default Login;

@@ -75,80 +75,55 @@ const Signup = () => {
           <RightWrapper>
             <CustomContainer>
               <Title>Sign Up</Title>
-              <Subtitle>or </Subtitle>
-              <LoginLink to="/login"> Log In</LoginLink>
-              <Subtitle> (if you already have an account) </Subtitle>
+
               <Signupform
                 method="POST"
                 onSubmit={submitHandler}
                 encType="multipart/form-data"
               >
                 <BarWrapper>
-                  <IconAndTagWrapper>
-                    <CustomAiOutlineEye />
-                    <TagWrapper>
-                      <Tag>Username</Tag>
-                      <PasswordInput
-                        id="confirm_password"
-                        type="username"
-                        placeholder="Enter your username"
-                        onChange={(e) => setUsername(e.target.value)}
-                        value={username}
-                        required
-                      />
-                    </TagWrapper>
-                  </IconAndTagWrapper>
-
+                  <CustomAiOutlineEye />
+                  <FormInput
+                    id="confirm_password"
+                    type="username"
+                    placeholder="Enter your name"
+                    onChange={(e) => setUsername(e.target.value)}
+                    value={username}
+                    required
+                  />
                   <CustomFaTimes onClick={clearUsername} />
                 </BarWrapper>
 
-                <PasswordBarWrapper>
-                  <IconAndTagWrapper>
-                    <CustomFaEnvelope />
-                    <TagWrapper>
-                      <Tag>Email</Tag>
-                      <SigninInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        placeholder="name@domain.com"
-                        onChange={(e) => setEmail(e.target.value)}
-                        value={email}
-                        required
-                      ></SigninInput>
-                    </TagWrapper>
-                  </IconAndTagWrapper>
-
+                <BarWrapper>
+                  <CustomFaEnvelope />
+                  <FormInput
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                    required
+                  />
                   <CustomFaTimes onClick={clearEmail} />
-                </PasswordBarWrapper>
-
-                <PasswordBarWrapper>
-                  <IconAndTagWrapper>
-                    <CustomFiLock />
-                    <TagWrapper>
-                      <Tag>Password</Tag>
-                      <PasswordInput
-                        id="password"
-                        type="password"
-                        placeholder="Must have at least 6 characters"
-                        onChange={(e) => setPassword(e.target.value)}
-                        value={password}
-                        required
-                      />
-                    </TagWrapper>
-                  </IconAndTagWrapper>
-
+                </BarWrapper>
+                <BarWrapper>
+                  <CustomFiLock />
+                  <FormInput
+                    id="password"
+                    type="password"
+                    placeholder="Enter your password"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    required
+                  />
                   <CustomFaTimes onClick={clearPassword} />
-                </PasswordBarWrapper>
+                </BarWrapper>
 
-                <ChooseFileText>Put your propic here</ChooseFileText>
-                <ChooseFileWrapper>
-                  <FileUpload type="file" onChange={fileHandler} />
-                </ChooseFileWrapper>
+                <SignupBar>Sign Up</SignupBar>
 
-                <SignupBar>
-                  <SignupTitle>Sign Up</SignupTitle>
-                </SignupBar>
+                <Subtitle> Already have an account?</Subtitle>
+                <LoginLink to="/login"> Log In</LoginLink>
               </Signupform>
             </CustomContainer>
           </RightWrapper>
@@ -161,7 +136,7 @@ const Signup = () => {
 const Wrapper = styled(Row)`
   height: 100vh;
   width: 100%;
-  background-color: white;
+  background-color: var(--primaryGoal);
 `;
 
 const Main = styled(Col)`
@@ -170,12 +145,18 @@ const Main = styled(Col)`
   padding-right: 0;
   display: flex;
   height: 100%;
+
   @media (max-width: 991.98px) {
+    margin-top: auto;
     display: block;
+    height: 80vh;
+    border-radius: 40px 40px 0px 0px;
+    padding-top: 40px;
   }
 `;
+
 const ImageBackWrapper = styled.div`
-  background-color: var(--primary);
+  background-color: var(--primaryGoal);
   height: 100%;
   width: 50%;
   display: flex;
@@ -183,8 +164,7 @@ const ImageBackWrapper = styled.div`
   justify-content: center;
 
   @media (max-width: 991.98px) {
-    height: 40%;
-    width: 100%;
+    display: none;
   }
 `;
 
@@ -208,9 +188,10 @@ const Title = styled.h1`
   font-size: 38px;
   font-weight: 700;
   color: #000000;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
+
   @media (max-width: 991.98px) {
-    padding-top: 10px;
+    padding-top: 40px;
   }
 `;
 
@@ -220,38 +201,43 @@ const CustomContainer = styled(Container)`
 
 const Subtitle = styled.span`
   font-family: "Roboto";
-  font-size: 19px;
-  color: #c2c2c2;
-  font-weight: 700;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-  }
+  font-size: 16px;
+  color: var(--monoTinted);
+  font-weight: 500;
 `;
 
 const BarWrapper = styled.div`
-  margin-top: 45px;
-  border-radius: 20px;
-  border: 2.41px solid var(--primary);
+  border-radius: 16px;
+  border: 2.41px solid var(--primaryGoal);
   display: flex;
   align-items: center;
   background-color: #fcfcfc;
   max-width: 481px;
+  padding: 10px 14px;
+  justify-content: space-between;
+  margin-bottom: 8px;
+
   @media (max-width: 767.98px) {
     margin-top: 8px;
   }
 `;
 
 const CustomFaEnvelope = styled(FaRegEnvelope)`
-  width: 29px;
-  height: 29px;
-  margin: 27px 29px;
+  width: 25px;
+  height: 25px;
+  color: var(--monoSecondary);
+`;
 
-  @media (max-width: 767.98px) {
-    width: 20px;
-    height: 20px;
-    margin: 22px 18px;
-  }
+const CustomFiLock = styled(FiLock)`
+  width: 25px;
+  height: 25px;
+  color: var(--monoSecondary);
+`;
+
+const CustomAiOutlineEye = styled(AiOutlineEye)`
+  width: 25px;
+  height: 25px;
+  color: var(--monoSecondary);
 `;
 
 const CustomFaTimes = styled(FaTimes)`
@@ -259,93 +245,31 @@ const CustomFaTimes = styled(FaTimes)`
   height: 20px;
   color: #a0a3bd;
   margin-left: auto;
-  margin-right: 26px;
-`;
-
-const TagWrapper = styled.div`
-  width: 100%;
-`;
-
-const Tag = styled.h2`
-  font-family: "Roboto";
-  font-size: 17px;
-  font-weight: 400;
-  color: #6e7191;
-  margin-bottom: 11px;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
-`;
-
-const CustomFiLock = styled(FiLock)`
-  width: 29px;
-  height: 29px;
-  margin: 27px 29px;
-
-  @media (max-width: 767.98px) {
-    width: 24px;
-    height: 24px;
-    margin: 22px 18px;
-  }
-`;
-
-const CustomAiOutlineEye = styled(AiOutlineEye)`
-  width: 29px;
-  height: 29px;
-  margin: 27px 29px;
-
-  @media (max-width: 767.98px) {
-    width: 24px;
-    height: 24px;
-    margin: 22px 18px;
-  }
-`;
-const PasswordBarWrapper = styled.div`
-  margin-top: 16px;
-  border-radius: 20px;
-  border: 2.41px solid var(--primary);
-  display: flex;
-  align-items: center;
-  background-color: #fcfcfc;
-  max-width: 481px;
 `;
 
 const SignupBar = styled.button`
-  margin-top: 46px;
+  margin-top: 24px;
   width: 100%;
-  border-radius: 20px;
-  background-color: var(--primary);
-  height: 80px;
+  border-radius: 18px;
+  background-color: var(--primaryGoal);
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   display: block;
-
-  @media (max-width: 767.98px) {
-    height: 70px;
-  }
-`;
-
-const SignupTitle = styled.h1`
   font-family: "Roboto";
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: white;
-
-  @media (max-width: 767.98px) {
-    font-size: 16px;
-  }
+  margin-bottom: 20px;
 `;
 
 const LoginLink = styled(Link)`
   font-family: "Roboto";
-  font-size: 19px;
-  color: #1c4b56;
-  font-weight: 700;
-
+  font-size: 16px;
+  color: var(--primaryShaded);
+  font-weight: 500;
   padding-bottom: 0.5px;
   outline: none;
 
@@ -354,61 +278,17 @@ const LoginLink = styled(Link)`
   }
 `;
 
-const IconAndTagWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-`;
-
 const Signupform = styled.form``;
 
-const SigninInput = styled.input`
+const FormInput = styled.input`
   font-family: "Roboto";
   font-size: 16px;
-  font-weight: 400;
-  color: black;
-  border: none;
-  width: 100%;
-  outline: none;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-  }
-`;
-
-const PasswordInput = styled.input`
-  font-family: "Roboto";
-  font-size: 16px;
-  font-weight: 400;
-  color: black;
-  border: none;
-  width: 100%;
-  outline: none;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-  }
-`;
-
-const ChooseFileWrapper = styled.label`
-  display: block;
-  border: 2px dashed #777777;
-  width: 100%;
-  padding: 20px;
-  text-align: center;
-  cursor: pointer;
-`;
-
-const ChooseFileText = styled.div`
-  font-size: 20px;
   font-weight: 500;
-  color: var(--primaryMild);
-  margin-top: 15px;
-  margin-bottom: 10px;
-`;
-
-const FileUpload = styled.input`
+  border: none;
+  width: 100%;
+  margin-left: 15px;
   outline: none;
+  color: var(--monoSecondary);
 `;
 
 export default Signup;
