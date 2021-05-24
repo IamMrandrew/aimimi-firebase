@@ -15,6 +15,7 @@ export const GlobalStyle = createGlobalStyle`
     --placeholder: #888888;
     --monoPrimary: #202020;
     --monoSecondary: #666666;
+    --monoTinted: #999999;
   }
   * {
       font-family: 'Roboto', "Open Sans", sans-serif;

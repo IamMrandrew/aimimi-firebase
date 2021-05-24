@@ -70,51 +70,39 @@ const Login = ({ setLoading }) => {
         <RightWrapper>
           <CustomContainer>
             <Title>Log In</Title>
-            <Subtitle>or </Subtitle>
-            <SignupLink to="/signup">Sign up </SignupLink>
-
-            <Subtitle> (if you do not have an account) </Subtitle>
             <LoginForm method="POST" onSubmit={submitHandler}>
               <BarWrapper>
-                <IconAndTagWrapper>
-                  <CustomFaEnvelope />
-                  <TagWrapper>
-                    <Tag>Email</Tag>
-                    <EmailInput
-                      id="email"
-                      type="email"
-                      name="name"
-                      placeholder="name@domain.com"
-                      onChange={(e) =>
-                        setEmails({ ...emails, email: e.target.value })
-                      }
-                      value={emails.email}
-                      required
-                    ></EmailInput>
-                  </TagWrapper>
-                </IconAndTagWrapper>
+                <CustomFaEnvelope />
+                <FormInput
+                  id="email"
+                  type="email"
+                  name="name"
+                  placeholder="Enter your email"
+                  onChange={(e) =>
+                    setEmails({ ...emails, email: e.target.value })
+                  }
+                  value={emails.email}
+                  required
+                />
                 <CustomFaTimes onClick={clearEmail} />
               </BarWrapper>
-              <PasswordBarWrapper>
+              <BarWrapper>
                 <CustomFiLock />
-                <TagWrapper>
-                  <Tag>Password</Tag>
-                  <PasswordInput
-                    id="password"
-                    type="password"
-                    placeholder="Must have at least 8 characters"
-                    onChange={(e) =>
-                      setPasswords({ ...passwords, password: e.target.value })
-                    }
-                    value={passwords.password}
-                    required
-                  />
-                </TagWrapper>
+                <FormInput
+                  id="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  onChange={(e) =>
+                    setPasswords({ ...passwords, password: e.target.value })
+                  }
+                  value={passwords.password}
+                  required
+                />
                 <CustomFaTimes onClick={clearPassword} />
-              </PasswordBarWrapper>
-              <LoginBar>
-                <LoginTitle>Login</LoginTitle>
-              </LoginBar>
+              </BarWrapper>
+              <LoginBar>Login</LoginBar>
+              <Subtitle> Don't have an account? </Subtitle>
+              <SignupLink to="/signup">Sign up </SignupLink>
             </LoginForm>
           </CustomContainer>
         </RightWrapper>
@@ -126,7 +114,7 @@ const Login = ({ setLoading }) => {
 const Wrapper = styled(Row)`
   height: 100vh;
   width: 100%;
-  background-color: white;
+  background-color: var(--primaryGoal);
 `;
 
 const Main = styled(Col)`
@@ -135,12 +123,17 @@ const Main = styled(Col)`
   padding-right: 0;
   display: flex;
   height: 100%;
+
   @media (max-width: 991.98px) {
+    margin-top: auto;
     display: block;
+    height: 80vh;
+    border-radius: 40px 40px 0px 0px;
+    padding-top: 40px;
   }
 `;
 const ImageBackWrapper = styled.div`
-  background-color: var(--primary);
+  background-color: var(--primaryGoal);
   height: 100%;
   width: 50%;
   display: flex;
@@ -148,9 +141,7 @@ const ImageBackWrapper = styled.div`
   justify-content: center;
 
   @media (max-width: 991.98px) {
-    height: 40%;
-    width: 100%;
-    align-items: center;
+    display: none;
   }
 `;
 
@@ -175,7 +166,7 @@ const Title = styled.h1`
   font-weight: 700;
   color: #000000;
 
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 
   @media (max-width: 991.98px) {
     padding-top: 40px;
@@ -186,41 +177,32 @@ const CustomContainer = styled(Container)`
   max-width: 481px;
 `;
 
-const Subtitle = styled.span`
-  font-family: "Roboto";
-  font-size: 19px;
-  color: #c2c2c2;
-  font-weight: 700;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-  }
-`;
-
 const BarWrapper = styled.div`
-  margin-top: 45px;
-  border-radius: 20px;
-  border: 2.41px solid var(--primary);
+  border-radius: 16px;
+  border: 2.41px solid var(--primaryGoal);
   display: flex;
   align-items: center;
   background-color: #fcfcfc;
   max-width: 481px;
+  padding: 10px 14px;
   justify-content: space-between;
+  margin-bottom: 8px;
+
   @media (max-width: 767.98px) {
     margin-top: 8px;
   }
 `;
 
 const CustomFaEnvelope = styled(FaRegEnvelope)`
-  width: 29px;
-  height: 29px;
-  margin: 27px 29px;
+  width: 25px;
+  height: 25px;
+  color: var(--monoSecondary);
+`;
 
-  @media (max-width: 767.98px) {
-    width: 20px;
-    height: 20px;
-    margin: 22px 18px;
-  }
+const CustomFiLock = styled(FiLock)`
+  width: 25px;
+  height: 25px;
+  color: var(--monoSecondary);
 `;
 
 const CustomFaTimes = styled(FaTimes)`
@@ -228,117 +210,51 @@ const CustomFaTimes = styled(FaTimes)`
   height: 20px;
   color: #a0a3bd;
   cursor: pointer;
-  margin-right: 26px;
-`;
-
-const TagWrapper = styled.div`
-  width: 100%;
-`;
-
-const Tag = styled.h2`
-  font-family: "Roboto";
-  font-size: 17px;
-  font-weight: 400;
-  color: #6e7191;
-  margin-bottom: 11px;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-    margin-bottom: 2px;
-  }
-`;
-
-const CustomFiLock = styled(FiLock)`
-  width: 29px;
-  height: 29px;
-  margin: 27px 29px;
-
-  @media (max-width: 767.98px) {
-    width: 24px;
-    height: 24px;
-    margin: 22px 18px;
-  }
-`;
-
-const PasswordBarWrapper = styled.div`
-  margin-top: 16px;
-  border-radius: 20px;
-  border: 2.41px solid var(--primary);
-  display: flex;
-  align-items: center;
-  background-color: #fcfcfc;
-  max-width: 481px;
 `;
 
 const LoginBar = styled.button`
-  margin-top: 46px;
+  margin-top: 24px;
   width: 100%;
-  border-radius: 20px;
-  background-color: var(--primary);
-  height: 80px;
+  border-radius: 18px;
+  background-color: var(--primaryGoal);
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
   display: block;
-
-  @media (max-width: 767.98px) {
-    height: 70px;
-  }
-`;
-
-const LoginTitle = styled.h1`
   font-family: "Roboto";
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: white;
-
-  @media (max-width: 767.98px) {
-    font-size: 16px;
-  }
+  margin-bottom: 20px;
 `;
 
 const LoginForm = styled.form``;
 
-const EmailInput = styled.input`
+const FormInput = styled.input`
   font-family: "Roboto";
   font-size: 16px;
-  font-weight: 400;
-  color: black;
+  font-weight: 500;
   border: none;
   width: 100%;
+  margin-left: 15px;
   outline: none;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-  }
+  color: var(--monoSecondary);
 `;
 
-const PasswordInput = styled.input`
+const Subtitle = styled.span`
   font-family: "Roboto";
   font-size: 16px;
-  font-weight: 400;
-  color: black;
-  border: none;
-  width: 100%;
-  outline: none;
-
-  @media (max-width: 767.98px) {
-    font-size: 14px;
-  }
-`;
-
-const IconAndTagWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
+  color: var(--monoTinted);
+  font-weight: 500;
 `;
 
 const SignupLink = styled(Link)`
   font-family: "Roboto";
-  font-size: 19px;
-  color: #1c4b56;
-  font-weight: 700;
+  font-size: 16px;
+  color: var(--primaryShaded);
+  font-weight: 500;
   padding-bottom: 0.5px;
   outline: none;
 
