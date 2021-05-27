@@ -16,8 +16,10 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
   const IsMatch = useLocation();
   const [title, setTitle] = useState();
   const [showDropDown, setShowDropDown] = useState(false);
-  const { auth, setAuth, propic, setPropic, authLoading } =
-    useContext(AuthContext);
+  // const { auth, setAuth, propic, setPropic, authLoading } =
+  //   useContext(AuthContext);
+
+  const { currentUser } = useAuth();
   const history = useHistory();
   const SideBarHandler = (showSidebar) => {
     setShowSidebar(!showSidebar);
@@ -28,17 +30,17 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
 
   const { signOut } = useAuth();
 
-  useEffect(() => {
-    // get user information
-    axios
-      .get("/user", { withCredentials: true })
-      .then((response) => {
-        setAuth(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data.message);
-      });
-  }, [setAuth]);
+  // useEffect(() => {
+  //   // get user information
+  //   axios
+  //     .get("/user", { withCredentials: true })
+  //     .then((response) => {
+  //       setAuth(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error.response.data.message);
+  //     });
+  // }, [setAuth]);
 
   // Check which page user is now viewing and set the corresponding title
   useEffect(() => {
@@ -52,19 +54,19 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
 
   // Handle logout if user clicked the logout button
   const Logout = () => {
-    // Send a delete request to clear the cookie and the information
-    axios
-      .delete("/user/logout", {
-        withCredentials: true,
-      })
-      .then((response) => {
-        history.push("/login");
-        setAuth(null);
-        setPropic(null);
-      })
-      .catch((error) => {
-        alert("Logout Failed. Try Again.");
-      });
+    // // Send a delete request to clear the cookie and the information
+    // axios
+    //   .delete("/user/logout", {
+    //     withCredentials: true,
+    //   })
+    //   .then((response) => {
+    //     history.push("/login");
+    //     setAuth(null);
+    //     setPropic(null);
+    //   })
+    //   .catch((error) => {
+    //     alert("Logout Failed. Try Again.");
+    //   });
   };
 
   const logout = () => {
@@ -100,8 +102,8 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
           data-testid="sidebarButton"
         />
         <Avator>
-          {!authLoading && <AvatorImg src={propic} />}
-          {authLoading && <Loader />}
+          {/* {!authLoading && <AvatorImg src={propic} />}
+          {authLoading && <Loader />} */}
         </Avator>
         <Today>{title}</Today>
         <OutDropDown>
@@ -110,7 +112,7 @@ const Nav = ({ showSidebar, setShowSidebar }) => {
               onClick={() => DropDownHandler(showDropDown)}
               data-testid="dropDownButton"
             >
-              <UserName>{auth ? auth.username : ""}</UserName>
+              <UserName>{currentUser.displayName}</UserName>
               <CustomFaChevronDown />
             </DropDownWrapper>
 

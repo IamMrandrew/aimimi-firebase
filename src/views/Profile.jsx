@@ -12,15 +12,16 @@ import {
   FaAngleDown,
   FaRegCheckSquare,
 } from "react-icons/fa";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
 
 //Profile Page
 const Profile = () => {
   const history = useHistory();
-  const { auth, propic, setPropic, authLoading, setAuthLoading } = useContext(
-    AuthContext
-  );
+  // const { auth, propic, setPropic, authLoading, setAuthLoading } = useContext(
+  //   AuthContext
+  // );
+  const { currentUser } = useAuth();
   const [open, setOpen] = useState(false);
   const [secondOpen, setSecondOpen] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -38,23 +39,23 @@ const Profile = () => {
       });
   }, []);
 
-  useEffect(() => {
-    // get all completed goals of user, which is a send request
-    axios
-      .get("/goal", { withCredentials: true })
-      .then((response) => {
-        setGoals(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    setCompleted(auth.completedGoals);
-  }, [auth]);
+  // useEffect(() => {
+  //   // get all completed goals of user, which is a send request
+  //   axios
+  //     .get("/goal", { withCredentials: true })
+  //     .then((response) => {
+  //       setGoals(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  //   setCompleted(auth.completedGoals);
+  // }, [auth]);
 
-  useEffect(() => {
-    //set the completed goal in state and pass the state to other component
-    setCompleted(auth.completedGoals);
-  }, [auth]);
+  // useEffect(() => {
+  //   //set the completed goal in state and pass the state to other component
+  //   setCompleted(auth.completedGoals);
+  // }, [auth]);
 
   const fileHandler = (e) => {
     setImg(e.target.files[0]);
@@ -77,32 +78,32 @@ const Profile = () => {
       });
   };
 
-  // Change profile picture function
-  const ChangeFile = (e) => {
-    // User click the choose profile picture button, and upload a image file to update the profile picture
-    e.preventDefault();
-    let formdata = new FormData();
-    formdata.append("img", img);
-    axios
-      .post("/user/add_propic", formdata, { withCredentials: true })
-      .then((response) => {
-        console.log("success");
-        setAuthLoading(true);
-        axios
-          .get(`/user/propic/`, { withCredentials: true })
-          .then((response) => {
-            setPropic(response.data);
-            setAuthLoading(false);
-          })
-          .catch((error) => {
-            console.log(error);
-            setAuthLoading(false);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+  // // Change profile picture function
+  // const ChangeFile = (e) => {
+  //   // User click the choose profile picture button, and upload a image file to update the profile picture
+  //   e.preventDefault();
+  //   let formdata = new FormData();
+  //   formdata.append("img", img);
+  //   axios
+  //     .post("/user/add_propic", formdata, { withCredentials: true })
+  //     .then((response) => {
+  //       console.log("success");
+  //       setAuthLoading(true);
+  //       axios
+  //         .get(`/user/propic/`, { withCredentials: true })
+  //         .then((response) => {
+  //           setPropic(response.data);
+  //           setAuthLoading(false);
+  //         })
+  //         .catch((error) => {
+  //           console.log(error);
+  //           setAuthLoading(false);
+  //         });
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
   return (
     <Wrapper>
@@ -112,32 +113,32 @@ const Profile = () => {
           <FlexDivResponsive>
             <BlockDiv>
               <Avator>
-                {!authLoading && <AvatorImg src={propic} />}
-                {authLoading && <Loader />}
+                {/* {!authLoading && <AvatorImg src={propic} />}
+                {authLoading && <Loader />} */}
               </Avator>
             </BlockDiv>
             <BlockDiv>
-              <Name>{auth.username}</Name>
+              <Name>{currentUser.displayName}</Name>
               <Joined>Joined</Joined>
               <FlexDiv>
                 {/* Calculate the number of joined date */}
                 <Times>
-                  {Math.floor(
+                  {/* {Math.floor(
                     (Date.now() - Date.parse(auth.joinDate)) /
                       (1000 * 3600 * 24)
-                  )}
+                  )} */}
                 </Times>
                 <Times> days ago</Times>
               </FlexDiv>
             </BlockDiv>
           </FlexDivResponsive>
           <FlexDivResponsive>
-            <Submitform onSubmit={ChangeFile} encType="multipart/form-data">
+            {/* <Submitform onSubmit={ChangeFile} encType="multipart/form-data">
               <ChooseFileWrapper>
                 <FileUpload type="file" onChange={fileHandler} />
               </ChooseFileWrapper>
               <ChangeButton>Change propic</ChangeButton>
-            </Submitform>
+            </Submitform> */}
           </FlexDivResponsive>
         </InformationWrapper>
 
@@ -150,7 +151,7 @@ const Profile = () => {
                     <FaCheckCircle />
                   </ItemText>
                 </ItemDiv>
-                <Status>{auth.completedGoals.length}</Status>
+                {/* <Status>{auth.completedGoals.length}</Status> */}
                 <GoalTitle>Compelted</GoalTitle>
               </CustomContainer1>
             </ItemWrapper>
@@ -162,7 +163,7 @@ const Profile = () => {
                     <FaBullseye />
                   </ItemText>
                 </SecondItemDiv>
-                <Status>{auth.onGoingGoals.length}</Status>
+                {/* <Status>{auth.onGoingGoals.length}</Status> */}
                 <GoalTitle>Ongoing</GoalTitle>
               </CustomContainer1>
             </SecondItemWrapper>
