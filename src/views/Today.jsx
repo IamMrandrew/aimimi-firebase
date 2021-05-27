@@ -8,7 +8,7 @@ import { AuthContext, useAuth } from "../contexts/AuthContext";
 
 // It will show the today page
 const Today = ({ showModal, setShowModal, goals, setGoals }) => {
-  const [selectedGoal, setSelectedGoal] = useState(0);
+  const [selectedGoal, setSelectedGoal] = useState(null);
   const [selectedGoalCheckIn, setSelectedGoalCheckIn] = useState(0);
   const { auth } = useContext(AuthContext);
   const [tasksLeft, setTaskLeft] = useState(0);

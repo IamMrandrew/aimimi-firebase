@@ -55,38 +55,40 @@ const CheckInModal = ({
   }, [selectedGoal, selectedGoalCheckIn]);
 
   return (
-    <Wrapper showModal={showModal}>
-      <Card showModal={showModal}>
-        <Title>Add Progress</Title>
-        <SliderField>
-          <Number>0</Number>
-          <SliderWrapper>
-            <SliderValue
-              showValue={showValue}
-              selectedGoal={selectedGoal}
-              progress={progress}
-            >
-              {progress}
-            </SliderValue>
-            <Slider
-              onChange={progressHandler}
-              onBlur={() => setShowValue(false)}
-              type="range"
-              value={progress}
-              min="0"
-              max={selectedGoal.goal.frequency}
-              selectedGoal={selectedGoal}
-              progress={progress}
-              data-testid="checkInProgress"
-            />
-          </SliderWrapper>
-          <Number>{selectedGoal.goal.frequency}</Number>
-        </SliderField>
-        <Button onClick={checkInHandler} data-testid="checkInButton">
-          Check in
-        </Button>
-      </Card>
-    </Wrapper>
+    selectedGoal && (
+      <Wrapper showModal={showModal}>
+        <Card showModal={showModal}>
+          <Title>Add Progress</Title>
+          <SliderField>
+            <Number>0</Number>
+            <SliderWrapper>
+              <SliderValue
+                showValue={showValue}
+                selectedGoal={selectedGoal}
+                progress={progress}
+              >
+                {progress}
+              </SliderValue>
+              <Slider
+                onChange={progressHandler}
+                onBlur={() => setShowValue(false)}
+                type="range"
+                value={progress}
+                min="0"
+                max={selectedGoal.goal.frequency}
+                selectedGoal={selectedGoal}
+                progress={progress}
+                data-testid="checkInProgress"
+              />
+            </SliderWrapper>
+            <Number>{selectedGoal.goal.frequency}</Number>
+          </SliderField>
+          <Button onClick={checkInHandler} data-testid="checkInButton">
+            Check in
+          </Button>
+        </Card>
+      </Wrapper>
+    )
   );
 };
 
@@ -152,9 +154,9 @@ const Slider = styled.input`
   border: none;
   background: ${(props) =>
     "linear-gradient(90deg,var(--primaryGoal)" +
-    (props.progress / props.selectedGoal.frequency) * 100 +
+    (props.progress / props.selectedGoal.goal.frequency) * 100 +
     "%,#eeeeee " +
-    (props.progress / props.selectedGoal.frequency) * 100 +
+    (props.progress / props.selectedGoal.goal.frequency) * 100 +
     "%)"};
 
   ::-webkit-slider-thumb {
@@ -173,11 +175,11 @@ const SliderValue = styled.span`
   position: absolute;
   top: -40px;
   left: ${(props) =>
-    (props.progress / props.selectedGoal.frequency) * 100 > 50
-      ? (props.progress / props.selectedGoal.frequency) * 100 - 3
-      : (props.progress / props.selectedGoal.frequency) * 100 === 50
-      ? (props.progress / props.selectedGoal.frequency) * 100
-      : (props.progress / props.selectedGoal.frequency) * 100 + 3}%;
+    (props.progress / props.selectedGoal.goal.frequency) * 100 > 50
+      ? (props.progress / props.selectedGoal.goal.frequency) * 100 - 3
+      : (props.progress / props.selectedGoal.goal.frequency) * 100 === 50
+      ? (props.progress / props.selectedGoal.goal.frequency) * 100
+      : (props.progress / props.selectedGoal.goal.frequency) * 100 + 3}%;
   transform: translateX(-50%)
     ${(props) => (props.showValue ? "scale(1)" : "scale(0.5)")};
   transform-origin: bottom;
