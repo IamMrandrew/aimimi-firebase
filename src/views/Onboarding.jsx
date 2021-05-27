@@ -9,6 +9,7 @@ import Onboarding2 from "../assets/Onboarding_2.png";
 import Onboarding3 from "../assets/Onboarding_3.png";
 import screenShot1 from "../assets/screenshot_onboarding_1.png";
 import screenShot2 from "../assets/screenshot_onboarding_2.png";
+import apk from "../assets/aimimi.apk";
 import { Link } from "react-router-dom";
 import MobileStoreButton from "react-mobile-store-button";
 
@@ -109,7 +110,8 @@ const Onboarding = () => {
                     <MobileStoreButton
                       store="android"
                       url={
-                        "https://play.google.com/apps/internaltest/4698898207217232587"
+                        // "https://play.google.com/apps/internaltest/4698898207217232587"
+                        apk
                       }
                       linkProps={{ title: "Google Play Button" }}
                       width={150}
