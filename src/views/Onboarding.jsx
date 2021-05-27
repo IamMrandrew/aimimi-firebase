@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components/macro";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -14,6 +14,8 @@ import MobileStoreButton from "react-mobile-store-button";
 
 //Onboarding page
 const Onboarding = () => {
+  const downloadRef = useRef(null);
+
   return (
     <Wrapper data-testid="onboardingComponent">
       <CustomNavbar expand="lg">
@@ -37,10 +39,12 @@ const Onboarding = () => {
             <ContentWrapper>
               <SloganWrapper>
                 <Slogan>A goal sharing application</Slogan>
-                <Button to="/signup">Get Started</Button>
+                <RefButton onClick={() => downloadRef.current.scrollIntoView()}>
+                  Get aimimi
+                </RefButton>
               </SloganWrapper>
             </ContentWrapper>
-            <ImgWrapper>
+            <ImgWrapper hide={true}>
               <OnboardingImg1 src={Onboarding3} />
             </ImgWrapper>
           </FlexWrapper>
@@ -90,7 +94,7 @@ const Onboarding = () => {
             </ImgWrapper>
           </FlexWrapper>
         </CustomContainer>
-        <Download>
+        <Download ref={downloadRef}>
           <CustomContainer>
             <FlexWrapper>
               <ContentWrapper>
@@ -100,6 +104,7 @@ const Onboarding = () => {
                     Aimimi offer options for both Android and iOS. You can now
                     download on Google play or App store.
                   </Para>
+                  <Para>(Google play still processing)</Para>
                   <StoreButtons>
                     <MobileStoreButton
                       store="android"
@@ -112,7 +117,9 @@ const Onboarding = () => {
                     />
                     <MobileStoreButton
                       store="ios"
-                      url={"https://"}
+                      url={
+                        "https://apps.apple.com/hk/app/aimimi/id1569332599?l=en"
+                      }
                       linkProps={{ title: "App Store Button" }}
                       width={150}
                     />
@@ -126,6 +133,8 @@ const Onboarding = () => {
                     Due to the work of our developers, we also provide a web
                     version of aimimi. Now, user can keep motivated everywhere.
                   </Para>
+                  <Para>(Web still under development)</Para>
+                  <Button to="/signup">Get Started</Button>
                 </TextWrapper>
               </ContentWrapper>
             </FlexWrapper>
@@ -290,6 +299,22 @@ const Button = styled(Link)`
     text-decoration: none;
     color: white;
   }
+`;
+
+const RefButton = styled.button`
+  display: block;
+  appearance: none;
+  background: var(--primaryMild);
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 8px 10px;
+  width: 160px;
+  border-radius: 18px;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  margin-top: 6px;
 `;
 
 const OnboardingImg1 = styled.img`

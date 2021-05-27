@@ -294,6 +294,8 @@ const SignInWithGoogle = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  margin-top: 20px;
 `;
 
 const GoogleIcon = styled.img`
