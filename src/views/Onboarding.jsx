@@ -100,18 +100,20 @@ const Onboarding = () => {
             <FlexWrapper>
               <ContentWrapper>
                 <TextWrapper>
-                  <Title>Get it on Mobile</Title>
+                  <Title style={{ marginBottom: 0 }}>Get it on Mobile</Title>
                   <Para>
                     Aimimi offer options for both Android and iOS. You can now
                     download on Google play or App store.
                   </Para>
-                  <Para>(Google play still processing)</Para>
+                  <Para>
+                    Google play still processing, get the{" "}
+                    <LinkApk href={apk}>apk</LinkApk> now.
+                  </Para>
                   <StoreButtons>
                     <MobileStoreButton
                       store="android"
                       url={
-                        // "https://play.google.com/apps/internaltest/4698898207217232587"
-                        apk
+                        "https://play.google.com/apps/internaltest/4698898207217232587"
                       }
                       linkProps={{ title: "Google Play Button" }}
                       width={150}
@@ -374,3 +376,5 @@ const StoreButtons = styled.div`
   display: flex;
   align-items: center;
 `;
+
+const LinkApk = styled.a``;
