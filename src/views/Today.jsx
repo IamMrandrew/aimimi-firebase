@@ -13,18 +13,14 @@ const Today = ({ showModal, setShowModal, goals, setGoals }) => {
   const { auth } = useContext(AuthContext);
   const [tasksLeft, setTaskLeft] = useState(0);
 
-  // useEffect(() => {
-  //   // Calculate how many tasks left and return the set the frequency in state
-  //   if (goals.length > 0 && auth.onGoingGoals) {
-  //     setTaskLeft(
-  //       auth.onGoingGoals.filter(
-  //         (goal) =>
-  //           goal.check_in !==
-  //           goals.find((item) => item._id === goal.goal_id).frequency
-  //       ).length
-  //     );
-  //   }
-  // }, [goals, auth.onGoingGoals]);
+  useEffect(() => {
+    // Calculate how many tasks left and return the set the frequency in state
+    if (goals && goals.length > 0) {
+      setTaskLeft(
+        goals.filter((goal) => goal.checkIn !== goal.goal.frequency).length
+      );
+    }
+  }, [goals]);
 
   return (
     <Wrapper>

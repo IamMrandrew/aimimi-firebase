@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components/macro";
 import axios from "axios";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuth } from "../contexts/AuthContext";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+const firestore = firebase.firestore();
 
 // Checkin Model for onGoing goals in Today page
 const CheckInModal = ({
@@ -13,34 +17,90 @@ const CheckInModal = ({
   const [progress, setProgress] = useState(0);
   const [showValue, setShowValue] = useState(false);
 
-  const { setAuth } = useContext(AuthContext);
+  // const { setAuth } = useContext(AuthContext);
+  const { currentUser } = useAuth();
 
   // For user to check in the goal
   const checkInHandler = () => {
     // Put the new progress with corresponding goal._id
-    axios
-      .put(
-        "/goal/check_in",
-        { goal_id: selectedGoal._id, check_in_time: progress },
-        { withCredentials: true }
-      )
-      .then((res) => {
-        console.log(res);
+    const doEnoughTimes = progress >= selectedGoal.goal.frequency;
+    if (doEnoughTimes) {
+      const newAccuracy =
+        ((selectedGoal.checkInSuccess + 1) / (selectedGoal.dayPassed + 1)) *
+        100;
 
-        // Update user onGoingGoals for auth state
-        axios
-          .get("/user", { withCredentials: true })
-          .then((response) => {
-            setAuth(response.data);
-          })
-          .catch((error) => {
-            console.log(error.response.data.message);
+      const updateCheckInToUser = () => {
+        firestore
+          .collection("users")
+          .doc(currentUser.uid)
+          .collection("goals")
+          .doc(selectedGoal.id)
+          .update({
+            checkIn: progress,
+            checkInSuccess: selectedGoal.checkInSuccess + 1,
+            checkedIn: true,
+            dayPassed: selectedGoal.dayPassed + 1,
+            accuracy: newAccuracy,
           });
-        setShowModal(!showModal);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      };
+
+      const updateAccuracyToGoal = () => {
+        firestore
+          .collection("goals")
+          .doc(selectedGoal.id)
+          .collection("users")
+          .doc(currentUser.uid)
+          .update({ accuracy: newAccuracy });
+      };
+
+      const completedAGoal =
+        selectedGoal.dayPassed + 1 >= selectedGoal.goal.timespan;
+      const completeSuccessful = newAccuracy >= 60;
+
+      if (completedAGoal) {
+        const removeGoalInUserGoals = () => {
+          firestore
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("goals")
+            .doc(selectedGoal.id)
+            .delete();
+        };
+
+        const addGoalInUserCompleted = () => {
+          firestore
+            .collection("users")
+            .doc(currentUser.uid)
+            .collection("completed")
+            .doc(selectedGoal.id)
+            .set({
+              title: selectedGoal.goal.title,
+              category: selectedGoal.goal.category,
+              period: selectedGoal.goal.period,
+              frequency: selectedGoal.goal.frequency,
+              timespan: selectedGoal.goal.timespan,
+              publicity: selectedGoal.goal.publicity,
+              description: selectedGoal.goal.description,
+            });
+        };
+
+        if (completeSuccessful) {
+          updateCheckInToUser();
+          updateAccuracyToGoal();
+          removeGoalInUserGoals();
+          addGoalInUserCompleted();
+        } else {
+          updateCheckInToUser();
+          updateAccuracyToGoal();
+          removeGoalInUserGoals();
+        }
+      }
+
+      updateCheckInToUser();
+      updateAccuracyToGoal();
+    }
+
+    setShowModal(!showModal);
   };
 
   // Set the progess bar value in progress state
