@@ -105,15 +105,15 @@ const Onboarding = () => {
                     Aimimi offer options for both Android and iOS. You can now
                     download on Google play or App store.
                   </Para>
-                  <Para>
+                  {/* <Para>
                     Google play still processing, get the{" "}
                     <LinkApk href={apk}>apk</LinkApk> now.
-                  </Para>
+                  </Para> */}
                   <StoreButtons>
                     <MobileStoreButton
                       store="android"
                       url={
-                        "https://play.google.com/apps/internaltest/4698898207217232587"
+                        "https://play.google.com/store/apps/details?id=com.aimimi.aimimi"
                       }
                       linkProps={{ title: "Google Play Button" }}
                       width={150}
