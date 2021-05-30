@@ -3,31 +3,39 @@ import styled from "styled-components/macro";
 import Container from "react-bootstrap/Container";
 import axios from "axios";
 import Feed from "../components/Feed";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuth } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
+import FeedService from "../services/FeedService";
 
 // Activity button
-const Activity = () => {
-  const [feeds, setFeeds] = useState([]);
+const Activity = ({ goals }) => {
+  // const [feeds, setFeeds] = useState([]);
   const { auth } = useContext(AuthContext);
+  const { currentUser } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [feeds] = FeedService.getFeeds(goals);
 
   useEffect(() => {
     // get the feeds the relative to the user, which is a get request
-    axios
-      .get("/feed", { withCredentials: true })
-      .then((response) => {
-        setFeeds(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    // axios
+    //   .get("/feed", { withCredentials: true })
+    //   .then((response) => {
+    //     setFeeds(response.data);
+    //     setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    // setFeeds(FeedService.getFeeds(goals));
+    if (feeds) {
+      setLoading(false);
+      console.log(feeds);
+    }
+  }, [feeds]);
 
   // Check whether user liked the button
   const checkIfLiked = (feed) => {
-    return feed.like.find((liked) => liked === auth._id);
+    // return feed.like.find((liked) => liked === currentUser.uid);
   };
 
   return (
@@ -39,10 +47,10 @@ const Activity = () => {
           {feeds.map((feed) => (
             <Feed
               feed={feed}
-              key={feed._id}
+              key={feed.id}
               liked={checkIfLiked(feed)}
               feeds={feeds}
-              setFeeds={setFeeds}
+              // setFeeds={setFeeds}
             />
           ))}
         </CustomContainer>

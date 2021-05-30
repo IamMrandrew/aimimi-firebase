@@ -16,7 +16,10 @@ const GoalService = {
   geSharedGoal: () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return useCollectionData(
-      firestore.collection("goals").where("publicity", "==", true),
+      firestore
+        .collection("goals")
+        .where("publicity", "==", true)
+        .orderBy("createdAt", "desc"),
       { idField: "id" }
     );
   },

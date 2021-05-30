@@ -130,7 +130,7 @@ const App = () => {
             <OtherProfile />
           </Route>
           <Route path="/activity">
-            <Activity />
+            <Activity goals={goals} />
           </Route>
           <Route path="/feed/:id">
             <SingleFeed />

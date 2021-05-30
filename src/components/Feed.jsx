@@ -16,15 +16,15 @@ const Feed = ({ feed, liked, feeds, setFeeds }) => {
 
   // Get the profile picture of the creator of the feed
   useEffect(() => {
-    axios
-      .get(`/user/propic/${feed.creator._id}`, { withCredentials: true })
-      .then((response) => {
-        setFeedPropic(response.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // axios
+    //   .get(`/user/propic/${feed.creator._id}`, { withCredentials: true })
+    //   .then((response) => {
+    //     setFeedPropic(response.data);
+    //     setLoading(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   }, [feed]);
 
   // Like the feed
@@ -82,9 +82,9 @@ const Feed = ({ feed, liked, feeds, setFeeds }) => {
             {loading && <Loader />}
           </Avator>
           <BlockDiv>
-            <Name>{feed.creator.username}</Name>
+            <Name>{feed.createdBy.username}</Name>
             <Time>
-              {Math.floor((Date.now() - Date.parse(feed.created_time)) / 86400)}{" "}
+              {Math.floor((Date.now() - Date.parse(feed.createdAt)) / 86400)}{" "}
               minutes ago
             </Time>
           </BlockDiv>
@@ -97,7 +97,7 @@ const Feed = ({ feed, liked, feeds, setFeeds }) => {
             data-testid="feedLikeButton"
           >
             <FaHeart />
-            <Number>{feed.like.length} likes</Number>
+            <Number>{feed.likes.length} likes</Number>
           </UnClickButton>
           <UnClickButton
             onClick={() => {
@@ -106,7 +106,7 @@ const Feed = ({ feed, liked, feeds, setFeeds }) => {
             data-testid="feedCommentButton"
           >
             <FaComments />
-            <Number>{feed.comment.length} comments</Number>
+            {/* <Number>{feed.comment.length} comments</Number> */}
           </UnClickButton>
         </ButtonDiv>
       </LeftDiv>
