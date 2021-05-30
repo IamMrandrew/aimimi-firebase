@@ -5,29 +5,32 @@ import axios from "axios";
 import SharedGoal from "../components/SharedGoal";
 import { AuthContext } from "../contexts/AuthContext";
 import Loader from "../components/Loader";
+import GoalService from "../services/GoalService";
 
-const Shares = () => {
+const Shares = ({ goals }) => {
   const [publicGoal, setPublicGoal] = useState(null);
   const { auth } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
+  const [sharedGoal] = GoalService.geSharedGoal();
 
   useEffect(() => {
     // fetch all public goals to show on the shares page
-    axios
-      .get("/goal/public_goal", { withCredentials: true })
-      .then((response) => {
-        setPublicGoal(response.data.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    // axios
+    //   .get("/goal/public_goal", { withCredentials: true })
+    //   .then((response) => {
+    //     setPublicGoal(response.data.data);
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    if (sharedGoal) {
+      setLoading(false);
+    }
+  }, [sharedGoal]);
   // check whether the user joined
   const checkIfJoined = (goal) => {
-    return auth.onGoingGoals.find(
-      (onGoingGoal) => onGoingGoal.goal_id === goal._id
-    );
+    return goals.find((onGoingGoal) => onGoingGoal.id === goal.id);
   };
 
   return (
@@ -38,10 +41,10 @@ const Shares = () => {
 
           <Subtitle>Trending</Subtitle>
           {/* map all public goals and pass the goal._id, goal, checkIfJoined(goal), publicGoal, setPublicGoal */}
-          {publicGoal &&
-            publicGoal.map((goal) => (
+          {sharedGoal &&
+            sharedGoal.map((goal) => (
               <SharedGoal
-                key={goal._id}
+                key={goal.id}
                 goal={goal}
                 joined={checkIfJoined(goal)}
                 publicGoal={publicGoal}

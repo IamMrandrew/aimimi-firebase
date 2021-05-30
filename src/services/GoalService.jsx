@@ -13,6 +13,13 @@ const GoalService = {
       { idField: "id" }
     );
   },
+  geSharedGoal: () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    return useCollectionData(
+      firestore.collection("goals").where("publicity", "==", true),
+      { idField: "id" }
+    );
+  },
 };
 
 export default GoalService;

@@ -121,7 +121,7 @@ const App = () => {
             <Details goals={goals} />
           </Route>
           <Route path="/shares">
-            <Shares />
+            <Shares goals={goals} />
           </Route>
           <Route exact path="/profile">
             <Profile />
@@ -153,7 +153,8 @@ const Wrapper = styled(Row)`
   overflow: auto;
 
   @media (min-width: 992px) {
-    overflow: hidden;
+    /* temporary fixed */
+    /* overflow: hidden; */
   }
 `;
 
