@@ -31,7 +31,7 @@ const Today = ({ showModal, setShowModal, goals, setGoals }) => {
         {goals &&
           goals.map((goal) => (
             <Goal
-              key={goal._id}
+              key={goal.id}
               goal={goal}
               showModal={showModal}
               setShowModal={setShowModal}

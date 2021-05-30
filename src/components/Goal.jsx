@@ -52,8 +52,7 @@ const Goal = ({
             <Description>{goal.goal.period}</Description>
             <Description>
               {/* Calculate the days left  */}
-              {goal.goal.timespan - goal.dayPassed}
-              days left
+              {goal.goal.timespan - goal.dayPassed} days left
             </Description>
           </TitleWrapper>
           <TimesWrapper>

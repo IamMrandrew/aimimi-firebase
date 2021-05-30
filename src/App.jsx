@@ -50,7 +50,7 @@ const App = () => {
   useEffect(() => {
     console.log("USER", currentUser);
     console.log(goals);
-  }, [goals]);
+  }, [goals, currentUser]);
   // useEffect function will automatically and independently run
   // useEffect(() => {
   //   //axios.get used GET request to fetch user data from MongoDB

@@ -5,31 +5,32 @@ import { FaAngleLeft, FaClipboardCheck, FaFire } from "react-icons/fa";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import axios from "axios";
 import { useParams, useHistory } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext, useAuth } from "../contexts/AuthContext";
 
 // Show the details of the goal in Goals page
 const Details = ({ goals, setGoals }) => {
   const { id } = useParams();
   const history = useHistory();
   const { auth, setAuth } = useContext(AuthContext);
-  const [goal, setGoal] = useState({});
-  const [userGoal, setUserGoal] = useState([]);
+
+  const { currentUser } = useAuth();
+  const [goal, setGoal] = useState();
 
   // Set the goals in Goals state
   useEffect(() => {
-    setGoal(goals.find((goal) => goal._id === id));
+    setGoal(goals.find((goal) => goal.id === id));
   }, [id, goals]);
 
   // Set the the details of the goal in userGoal state
-  useEffect(() => {
-    if (auth.onGoingGoals) {
-      if (auth.onGoingGoals.length > 0) {
-        setUserGoal(
-          auth.onGoingGoals.find((item) => item.goal_id === goal._id)
-        );
-      }
-    }
-  }, [goal, auth, id]);
+  // useEffect(() => {
+  //   if (auth.onGoingGoals) {
+  //     if (auth.onGoingGoals.length > 0) {
+  //       setUserGoal(
+  //         auth.onGoingGoals.find((item) => item.goal_id === goal._id)
+  //       );
+  //     }
+  //   }
+  // }, [goal, auth, id]);
 
   // Route user to goals page
   const backGoalsHandler = (e) => {
@@ -67,83 +68,68 @@ const Details = ({ goals, setGoals }) => {
 
   return (
     <Wrapper>
-      <CustomContainer>
-        <LeftButtonWrapper onClick={backGoalsHandler}>
-          <CustomFaAngleLeft />
-        </LeftButtonWrapper>
-        <HeadingWrapper>
-          <TitleWrapper>
-            <Title> {goal.title} </Title>
-            <Description>{goal.category}</Description>
-            <Description>{goal.period}</Description>
-            <Description>
-              {goals.length > 0 &&
-                goal.timespan -
-                  Math.floor(
-                    (Date.now() - Date.parse(goal.startTime)) /
-                      (1000 * 3600 * 24)
-                  )}{" "}
-              days left
-            </Description>
-          </TitleWrapper>
-        </HeadingWrapper>
+      {goal && (
+        <CustomContainer>
+          <LeftButtonWrapper onClick={backGoalsHandler}>
+            <CustomFaAngleLeft />
+          </LeftButtonWrapper>
+          <HeadingWrapper>
+            <TitleWrapper>
+              <Title> {goal.goal.title} </Title>
+              <Description>{goal.goal.category}</Description>
+              <Description>{goal.goal.period}</Description>
+              <Description>
+                {goal.goal.timespan - goal.dayPassed} days left
+              </Description>
+            </TitleWrapper>
+          </HeadingWrapper>
 
-        <ContentWrapper>
-          <DetailsWrapper>
-            <EmptyDiv>
-              <DeatilTitle>How well you did?</DeatilTitle>
-              <PercentageDiv>
-                <Number>{userGoal && Math.round(userGoal.accuracy)}%</Number>
-                <ItemIcon>
-                  <FaClipboardCheck />
-                </ItemIcon>
-              </PercentageDiv>
-              <Status>success</Status>
-            </EmptyDiv>
-          </DetailsWrapper>
-          <DetailsWrapper>
-            <EmptyDiv>
-              <DeatilTitle>How long did you lasted for?</DeatilTitle>
-              <PercentageDiv>
-                <Number>
-                  {userGoal && userGoal.check_in_successful_time} days
-                </Number>
-                <ItemIcon>
-                  <FaFire />
-                </ItemIcon>
-              </PercentageDiv>
-              <Status>streaks</Status>
-            </EmptyDiv>
-          </DetailsWrapper>
-          <LastWrapper>
-            <EmptyDiv>
-              <DeatilTitle>How long did you lasted for?</DeatilTitle>
-              <PercentageDiv>
-                <PastDay>
-                  {Math.floor(
-                    (Date.now() - Date.parse(userGoal && userGoal.join_time)) /
-                      (1000 * 3600 * 24)
-                  )}{" "}
-                  day passed
-                </PastDay>
-              </PercentageDiv>
-              <CustomProgressbar
-                now={Math.floor(
-                  (Date.now() - Date.parse(userGoal && userGoal.join_time)) /
-                    (1000 * 3600 * 24)
-                )}
-                max={`${goal.timespan}`}
-                variant="info"
-              />
-              <LabelDiv>
-                <Label>0</Label>
-                <Label>{goal.timespan}</Label>
-              </LabelDiv>
-            </EmptyDiv>
-          </LastWrapper>
-        </ContentWrapper>
-        <QuitButton onClick={onClickDeleteHandler}>Quit goal</QuitButton>
-      </CustomContainer>
+          <ContentWrapper>
+            <DetailsWrapper>
+              <EmptyDiv>
+                <DeatilTitle>How well you did?</DeatilTitle>
+                <PercentageDiv>
+                  <Number>{goal && Math.round(goal.accuracy)}%</Number>
+                  <ItemIcon>
+                    <FaClipboardCheck />
+                  </ItemIcon>
+                </PercentageDiv>
+                <Status>success</Status>
+              </EmptyDiv>
+            </DetailsWrapper>
+            <DetailsWrapper>
+              <EmptyDiv>
+                <DeatilTitle>How long did you lasted for?</DeatilTitle>
+                <PercentageDiv>
+                  <Number>{goal.checkInSuccess} days</Number>
+                  <ItemIcon>
+                    <FaFire />
+                  </ItemIcon>
+                </PercentageDiv>
+                <Status>streaks</Status>
+              </EmptyDiv>
+            </DetailsWrapper>
+            <LastWrapper>
+              <EmptyDiv>
+                <DeatilTitle>How long did you lasted for?</DeatilTitle>
+                <PercentageDiv>
+                  <PastDay>{goal.dayPassed} day passed</PastDay>
+                </PercentageDiv>
+                <CustomProgressbar
+                  now={goal.dayPassed}
+                  max={`${goal.goal.timespan}`}
+                  variant="info"
+                />
+                <LabelDiv>
+                  <Label>0</Label>
+                  <Label>{goal.goal.timespan}</Label>
+                </LabelDiv>
+              </EmptyDiv>
+            </LastWrapper>
+          </ContentWrapper>
+          <QuitButton onClick={onClickDeleteHandler}>Quit goal</QuitButton>
+        </CustomContainer>
+      )}
     </Wrapper>
   );
 };

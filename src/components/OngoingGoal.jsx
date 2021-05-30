@@ -10,23 +10,19 @@ const OngoingGoal = ({ goal }) => {
   // Route user to view goal details if user clicked the component
   const onClickHandler = (e) => {
     e.preventDefault();
-    history.push(`/goals/${goal._id}`);
+    history.push(`/goals/${goal.id}`);
   };
 
   return (
     <div>
-      <Wrapper onClick={onClickHandler} data-testid='ongoingGoalButton'>
+      <Wrapper onClick={onClickHandler} data-testid="ongoingGoalButton">
         <TitleWrapper>
-          <Title>{goal.title}</Title>
-          <Description>{goal.category}</Description>
-          <Description>{goal.period}</Description>
+          <Title>{goal.goal.title}</Title>
+          <Description>{goal.goal.category}</Description>
+          <Description>{goal.goal.period}</Description>
           <Description>
             {/* calculate the days left*/}
-            {goal.timespan -
-              Math.floor(
-                (Date.now() - Date.parse(goal.startTime)) / (1000 * 3600 * 24)
-              )}{" "}
-            days left
+            {goal.goal.timespan - goal.dayPassed} days left
           </Description>
         </TitleWrapper>
         <TimesWrapper>

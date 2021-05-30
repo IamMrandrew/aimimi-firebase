@@ -12,9 +12,8 @@ const Goals = ({ goals, setGoals }) => {
         <Title>Goals</Title>
 
         {/* we pass the goals state to component <OngoingGoal> */}
-        {goals.map((goal) => (
-          <OngoingGoal key={goal._id} goal={goal} />
-        ))}
+        {goals &&
+          goals.map((goal) => <OngoingGoal key={goal.id} goal={goal} />)}
 
         {/* Show add goal button */}
         <AddGoal setGoals={setGoals} />
