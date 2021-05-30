@@ -136,7 +136,7 @@ const App = () => {
             <SingleFeed />
           </Route>
           <Route path="/leaderboard/:id">
-            <Leaderboard userSharedGoals={userSharedGoals} />
+            <Leaderboard goals={goals} />
           </Route>
         </Main>
       </Wrapper>

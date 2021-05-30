@@ -9,25 +9,25 @@ import { useHistory, useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 
 //Leaderboard page
-const Leaderboard = ({ userSharedGoals }) => {
+const Leaderboard = ({ goals }) => {
   const [ranks, setRanks] = useState();
   const { id } = useParams();
   const history = useHistory();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
     // get the leaderboard of a goal with params equal to the leaderboard.id
-    axios
-      .get(`/goal/leaderboard/${id}`, { withCredentials: true })
-      .then((response) => {
-        setRanks(response.data.data);
-        setLoading(false);
-        console.log(response.data.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // axios
+    //   .get(`/goal/leaderboard/${id}`, { withCredentials: true })
+    //   .then((response) => {
+    //     setRanks(response.data.data);
+    //     setLoading(false);
+    //     console.log(response.data.data);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+    setLoading(false);
   }, [id]);
 
   const selectBoxHandler = (e) => {
@@ -41,7 +41,7 @@ const Leaderboard = ({ userSharedGoals }) => {
           <SelectBoxWrapper>
             <SelectBox onChange={selectBoxHandler} value={id}>
               {/* map the title of shared goals in the select box  */}
-              {userSharedGoals.map((goal) => (
+              {goals.map((goal) => (
                 <Option key={goal._id} value={goal._id}>
                   {goal.title}
                 </Option>
@@ -52,18 +52,16 @@ const Leaderboard = ({ userSharedGoals }) => {
           <Meta>
             <Desc>
               {/* find the period of the userSharedGoals */}
-              {userSharedGoals.length > 0 &&
-                userSharedGoals.find((goal) => goal._id === id).period}
+              {goals.length > 0 && goals.find((goal) => goal._id === id).period}
             </Desc>
             <Desc>
               {/* find the timespan of the userSharedGoals and calculate how many days left */}
-              {userSharedGoals.length > 0 &&
-                userSharedGoals.find((goal) => goal._id === id).timespan -
+              {goals.length > 0 &&
+                goals.find((goal) => goal._id === id).timespan -
                   Math.floor(
                     (Date.now() -
                       Date.parse(
-                        userSharedGoals.find((goal) => goal._id === id)
-                          .startTime
+                        goals.find((goal) => goal._id === id).startTime
                       )) /
                       (1000 * 3600 * 24)
                   )}{" "}
